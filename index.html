@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Four Basic Operations Drill - Key Stage 3</title>
+<style>
+  :root{
+    --primary:#6c5ce7;
+    --secondary:#ffd93d;
+    --accent:#00b8d9;
+    --pink:#ff6bcb;
+    --orange:#ff8a3d;
+    --green:#2ed573;
+    --success:#16a34a;
+    --danger:#ef4444;
+    --bg:#f8f7ff;
+    --card:#ffffff;
+    --text:#243047;
+    --muted:#667085;
+    --shadow:0 16px 40px rgba(108,92,231,.18);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(255,107,203,.35), transparent 24%),
+      radial-gradient(circle at 90% 15%, rgba(0,184,217,.28), transparent 24%),
+      radial-gradient(circle at 15% 90%, rgba(255,217,61,.32), transparent 24%),
+      linear-gradient(135deg,#f8f4ff,#eefcff 48%,#fff8df);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  button,input,select{font:inherit}
+  .app-shell{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
+  .screen{
+    display:none;
+    width:min(1100px,100%);
+    background:rgba(255,255,255,.95);
+    border:3px solid rgba(255,255,255,.9);
+    border-radius:28px;
+    box-shadow:var(--shadow);
+    padding:clamp(20px,4vw,42px);
+    animation:fade .35s ease;
+    backdrop-filter:blur(10px);
+  }
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:700;color:var(--primary)}
+  .brand-badge{
+    width:50px;height:50px;border-radius:16px;
+    background:linear-gradient(135deg,var(--secondary),var(--orange));
+    display:grid;place-items:center;font-size:25px;
+    box-shadow:0 8px 18px rgba(255,138,61,.25)
+  }
+  h1{
+    font-size:clamp(2rem,5vw,4rem);
+    margin:.3em 0 .2em;
+    background:linear-gradient(90deg,var(--primary),var(--pink),var(--orange));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent
+  }
+  h2{
+    font-size:clamp(1.5rem,3vw,2.4rem);
+    margin:0 0 18px;
+    background:linear-gradient(90deg,var(--primary),var(--accent));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent
+  }
+  p{line-height:1.6}
+  .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
+  .hero-card{
+    background:linear-gradient(135deg,var(--primary),var(--pink) 52%,var(--orange));
+    color:#fff;
+    border-radius:28px;
+    padding:28px;
+    text-align:center;
+    box-shadow:0 16px 34px rgba(255,107,203,.25);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-card:before,.hero-card:after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,.16);
+  }
+  .hero-card:before{width:150px;height:150px;right:-40px;top:-50px}
+  .hero-card:after{width:100px;height:100px;left:-30px;bottom:-30px}
+  .ops{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:10px 0 20px}
+  .op-icon{
+    aspect-ratio:1;border-radius:22px;
+    display:grid;place-items:center;font-size:clamp(2rem,5vw,4rem);font-weight:800;
+    color:#fff;
+    box-shadow:0 10px 22px rgba(0,0,0,.16);
+    transform:rotate(-2deg);
+  }
+  .op-icon:nth-child(1){background:linear-gradient(135deg,#ff6bcb,#ff8a3d)}
+  .op-icon:nth-child(2){background:linear-gradient(135deg,#00b8d9,#2ed573);transform:rotate(2deg)}
+  .op-icon:nth-child(3){background:linear-gradient(135deg,#6c5ce7,#00b8d9);transform:rotate(2deg)}
+  .op-icon:nth-child(4){background:linear-gradient(135deg,#ffd93d,#ff8a3d);color:#5a3b00}
+  .primary-btn,.secondary-btn,.danger-btn{
+    border:none;border-radius:14px;padding:14px 22px;font-weight:700;cursor:pointer;
+    transition:.2s transform,.2s opacity;display:inline-flex;align-items:center;justify-content:center;gap:8px
+  }
+  .primary-btn{
+    background:linear-gradient(135deg,var(--secondary),var(--orange));
+    color:#3b2d00;
+    box-shadow:0 8px 18px rgba(255,138,61,.25)
+  }
+  .secondary-btn{
+    background:linear-gradient(135deg,#ede9ff,#dff9ff);
+    color:var(--primary);
+    border:1px solid #d5ccff
+  }
+  .danger-btn{
+    background:linear-gradient(135deg,#ffe0e0,#ffd0e7);
+    color:var(--danger)
+  }
+  .primary-btn:hover,.secondary-btn:hover,.danger-btn:hover{transform:translateY(-2px)}
+  .wide{width:100%}
+  .setup-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  .field{
+    background:linear-gradient(135deg,#ffffff,#f6f3ff);
+    border:2px solid #e7e1ff;
+    border-radius:18px;
+    padding:15px;
+    box-shadow:0 8px 18px rgba(108,92,231,.08)
+  }
+  .field:nth-child(2n){background:linear-gradient(135deg,#ffffff,#eefdff);border-color:#d2f5fb}
+  .field:nth-child(3n){background:linear-gradient(135deg,#ffffff,#fff7dc);border-color:#ffedaa}
+  .field label{display:block;font-weight:700;margin-bottom:8px}
+  select,input[type=number]{
+    width:100%;padding:13px;border:1px solid #bed3e6;border-radius:12px;background:#fff;color:var(--text)
+  }
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .switch{position:relative;width:58px;height:32px}
+  .switch input{opacity:0;width:0;height:0}
+  .slider{position:absolute;inset:0;background:#c8d4df;border-radius:99px;cursor:pointer}
+  .slider:before{content:"";position:absolute;width:24px;height:24px;left:4px;top:4px;background:#fff;border-radius:50%;transition:.2s}
+  .switch input:checked + .slider{background:var(--success)}
+  .switch input:checked + .slider:before{transform:translateX(26px)}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+  .drill-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .pill{
+    background:linear-gradient(135deg,#efeaff,#dff9ff);
+    border:1px solid #d7d0ff;
+    border-radius:999px;
+    padding:9px 14px;
+    font-weight:800;
+    color:var(--primary);
+    box-shadow:0 5px 12px rgba(108,92,231,.10)
+  }
+  .progress{
+    height:16px;
+    background:linear-gradient(90deg,#f1edff,#e5fbff,#fff5cf);
+    border-radius:99px;
+    overflow:hidden;
+    margin:18px 0;
+    border:1px solid #e8e0ff
+  }
+  .progress > div{
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,var(--primary),var(--pink),var(--orange),var(--secondary));
+    transition:.25s
+  }
+  .question-card{
+    background:
+      radial-gradient(circle at 15% 20%,rgba(255,107,203,.14),transparent 22%),
+      radial-gradient(circle at 85% 20%,rgba(0,184,217,.14),transparent 22%),
+      radial-gradient(circle at 50% 100%,rgba(255,217,61,.18),transparent 30%),
+      linear-gradient(135deg,#ffffff,#f9f7ff);
+    border:3px solid #e4dcff;
+    border-radius:28px;
+    padding:clamp(24px,5vw,56px);
+    text-align:center;
+    box-shadow:0 14px 30px rgba(108,92,231,.12)
+  }
+  .question{
+    font-size:clamp(2.6rem,9vw,6.5rem);
+    font-weight:900;
+    letter-spacing:1px;
+    margin:10px 0 20px;
+    background:linear-gradient(90deg,var(--primary),var(--pink),var(--orange));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .answer-input{
+    width:100%;
+    max-width:340px;
+    text-align:center;
+    font-size:clamp(1.6rem,5vw,2.8rem);
+    font-weight:700;
+    padding:12px;
+    border:3px solid #d8d0f5;
+    border-radius:16px;
+    background:#fff;
+    color:var(--text);
+  }
+  .touch-keypad{
+    width:min(420px,100%);
+    margin:18px auto 0;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
+  .keypad-key{
+    min-height:58px;
+    border:none;
+    border-radius:16px;
+    font-size:1.45rem;
+    font-weight:900;
+    cursor:pointer;
+    color:#26324a;
+    background:linear-gradient(135deg,#ffffff,#eeeaff);
+    border:2px solid #ded7ff;
+    box-shadow:0 7px 14px rgba(108,92,231,.12);
+    touch-action:manipulation;
+    user-select:none;
+  }
+  .keypad-key:active{transform:scale(.96)}
+  .keypad-negative{
+    background:linear-gradient(135deg,#fff0cc,#ffd66b);
+    border-color:#ffc94d;
+  }
+  .keypad-clear{
+    background:linear-gradient(135deg,#ffe7ee,#ffc7dc);
+    border-color:#ffb1cf;
+    color:#b42355;
+  }
+  .keypad-back{
+    background:linear-gradient(135deg,#e6f8ff,#bfefff);
+    border-color:#9de5f8;
+    color:#087a96;
+  }
+  .keypad-submit{
+    grid-column:span 3;
+    background:linear-gradient(135deg,var(--green),#00b894);
+    border-color:#15b982;
+    color:#fff;
+    min-height:62px;
+  }
+  .feedback{min-height:42px;font-size:1.35rem;font-weight:800;margin-top:16px}
+  .correct{color:var(--success)}
+  .wrong{color:var(--danger)}
+  .timer{font-size:1.15rem;font-weight:800}
+  .result-score{
+    font-size:clamp(3rem,8vw,6rem);
+    font-weight:900;
+    text-align:center;
+    background:linear-gradient(90deg,var(--primary),var(--pink),var(--orange));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent
+  }
+  .result-message{text-align:center;font-size:1.3rem;font-weight:700}
+  .review{margin-top:22px;display:grid;gap:10px;max-height:320px;overflow:auto}
+  .review-item{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:12px;
+    padding:12px 14px;
+    background:linear-gradient(135deg,#ffffff,#f8f7ff);
+    border-radius:14px;
+    box-shadow:0 5px 12px rgba(108,92,231,.07)
+  }
+  .review-item.ok{border-left:6px solid var(--success)}
+  .review-item.bad{border-left:6px solid var(--danger)}
+  .small{color:var(--muted);font-size:.95rem}
+  .footer-note{text-align:center;margin-top:18px;color:var(--muted);font-size:.9rem}
+  .developer-credit{
+    margin-top:12px;
+    text-align:center;
+    font-weight:800;
+    font-size:1rem;
+    background:linear-gradient(90deg,var(--primary),var(--pink),var(--orange));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    letter-spacing:.3px;
+  }
+
+  .records-summary{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:12px;
+    margin:16px 0;
+  }
+  .summary-card{
+    padding:16px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#ffffff,#f5f1ff);
+    border:2px solid #e7e1ff;
+    text-align:center;
+    box-shadow:0 8px 18px rgba(108,92,231,.08);
+  }
+  .summary-card:nth-child(2){background:linear-gradient(135deg,#ffffff,#eefdff);border-color:#d2f5fb}
+  .summary-card:nth-child(3){background:linear-gradient(135deg,#ffffff,#fff7dc);border-color:#ffedaa}
+  .summary-card:nth-child(4){background:linear-gradient(135deg,#ffffff,#ffeaf5);border-color:#ffd3e9}
+  .summary-number{font-size:1.8rem;font-weight:900;color:var(--primary)}
+  .records-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0}
+  .records-tools input{flex:1;min-width:220px;padding:12px;border:1px solid #d8d0f5;border-radius:12px}
+  .table-wrap{overflow:auto;max-height:430px;border-radius:16px;border:1px solid #e7e1ff}
+  .records-table{width:100%;border-collapse:collapse;min-width:900px;background:#fff}
+  .records-table th,.records-table td{padding:11px 12px;border-bottom:1px solid #eee;text-align:left;font-size:.92rem}
+  .records-table th{position:sticky;top:0;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;z-index:1}
+  .records-table tr:nth-child(even){background:#faf9ff}
+  .empty-records{text-align:center;padding:30px;color:var(--muted)}
+  .creator-btn{
+    margin-top:12px;
+    background:linear-gradient(135deg,var(--primary),var(--pink));
+    color:#fff;border:none;border-radius:14px;padding:12px 18px;font-weight:800;cursor:pointer;
+  }
+  @media (max-width:760px){
+    .records-summary{grid-template-columns:repeat(2,1fr)}
+  }
+
+  .global-credit{
+    position:fixed;
+    left:14px;
+    bottom:16px;
+    z-index:50;
+    padding:8px 13px;
+    border-radius:999px;
+    background:rgba(255,255,255,.9);
+    border:1px solid rgba(108,92,231,.18);
+    box-shadow:0 8px 20px rgba(108,92,231,.12);
+    font-size:.86rem;
+    font-weight:800;
+    color:var(--primary);
+    backdrop-filter:blur(8px);
+  }
+  @media (max-width:520px){
+    .global-credit{
+      left:8px;
+      bottom:10px;
+      font-size:.76rem;
+      padding:7px 10px;
+    }
+  }
+  .fullscreen-btn{
+    position:fixed;right:14px;bottom:14px;border:none;border-radius:50%;
+    width:56px;height:56px;
+    background:linear-gradient(135deg,var(--primary),var(--pink));
+    color:#fff;font-size:22px;cursor:pointer;
+    box-shadow:0 12px 28px rgba(108,92,231,.28)
+  }
+  .confetti-piece{
+    position:fixed;
+    top:-20px;
+    width:10px;
+    height:16px;
+    border-radius:3px;
+    pointer-events:none;
+    z-index:9999;
+    animation:confetti-fall 1.8s linear forwards;
+  }
+  @keyframes confetti-fall{
+    0%{transform:translate3d(0,-20px,0) rotate(0deg);opacity:1}
+    100%{transform:translate3d(var(--drift),105vh,0) rotate(720deg);opacity:0}
+  }
+  @media (max-width:780px){
+    .hero{grid-template-columns:1fr}
+    .setup-grid{grid-template-columns:1fr}
+    .screen{border-radius:18px}
+    .actions > *{flex:1 1 160px}
+  }
+  @media (max-width:480px){
+    .app-shell{padding:8px}
+    .screen{padding:18px}
+    .question{font-size:2.7rem}
+  }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <section id="landing" class="screen active">
+    <div class="hero">
+      <div>
+        <div class="brand">
+          <div class="brand-badge">∑</div>
+          <span>KEY STAGE 3 MATHEMATICS</span>
+        </div>
+        <h1>Four Basic Operations Drill</h1>
+        <p>
+          A classroom-ready drill application for Key Stage 3 teachers. Practice addition,
+          subtraction, multiplication, division, or mixed operations using three levels of difficulty.
+          The app works offline and is suitable for laptops, projectors, interactive TVs, tablets, and mobile phones.
+        </p>
+        <button class="primary-btn" onclick="showScreen('setup')">▶ Proceed to Drill</button>
+      </div>
+
+      <div class="hero-card">
+        <div class="ops">
+          <div class="op-icon">+</div>
+          <div class="op-icon">−</div>
+          <div class="op-icon">×</div>
+          <div class="op-icon">÷</div>
+        </div>
+        <strong>Build speed, accuracy, and confidence.</strong>
+      </div>
+    </div>
+    <div class="footer-note">Offline HTML Application • No internet connection required</div>
+    <div class="developer-credit">Developed by Ma’am Gem</div>
+    <div style="text-align:center">
+      <button class="creator-btn" onclick="openCreatorRecords()">📊 Creator Records</button>
+    </div>
+  </section>
+
+  <section id="setup" class="screen">
+    <h2>Teacher Drill Setup</h2>
+    <div class="setup-grid">
+      <div class="field">
+        <label for="learnerName">Learner Name</label>
+        <input id="learnerName" type="text" placeholder="Enter learner name" autocomplete="name" />
+      </div>
+
+      <div class="field">
+        <label for="learnerSection">Grade and Section</label>
+        <input id="learnerSection" type="text" placeholder="Example: Grade 8 - SSC" />
+      </div>
+
+      <div class="field">
+        <label for="operation">Operation</label>
+        <select id="operation">
+          <option value="add">Addition</option>
+          <option value="sub">Subtraction</option>
+          <option value="mul">Multiplication</option>
+          <option value="div">Division</option>
+          <option value="mixed">Mixed Operations</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="difficulty">Difficulty Level</label>
+        <select id="difficulty">
+          <option value="easy">Easy</option>
+          <option value="average">Average</option>
+          <option value="difficult">Difficult</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="questionCount">Number of Questions</label>
+        <select id="questionCount">
+          <option>5</option>
+          <option selected>10</option>
+          <option>15</option>
+          <option>20</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="timerSeconds">Time per Question</label>
+        <select id="timerSeconds">
+          <option value="0">No Timer</option>
+          <option value="10">10 seconds</option>
+          <option value="15">15 seconds</option>
+          <option value="20">20 seconds</option>
+          <option value="30">30 seconds</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="mode">Drill Mode</label>
+        <select id="mode">
+          <option value="individual">Individual Mode</option>
+          <option value="classroom">Classroom Mode</option>
+        </select>
+      </div>
+
+      <div class="field toggle-row">
+        <div>
+          <label style="margin:0">Sound Effects</label>
+          <div class="small">Correct and wrong answer sounds</div>
+        </div>
+        <label class="switch">
+          <input id="soundToggle" type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="secondary-btn" onclick="showScreen('landing')">← Back</button>
+      <button class="primary-btn" onclick="startDrill()">Start Drill</button>
+    </div>
+  </section>
+
+  <section id="drill" class="screen">
+    <div class="drill-top">
+      <div class="pill" id="questionLabel">Question 1 of 10</div>
+      <div class="pill" id="scoreLabel">Score: 0</div>
+      <div class="pill timer" id="timerLabel">No Timer</div>
+    </div>
+
+    <div class="progress"><div id="progressBar"></div></div>
+
+    <div class="question-card">
+      <div class="small" id="levelLabel"></div>
+      <div class="question" id="questionText">8 + 7</div>
+      <input id="answerInput" class="answer-input" type="text" inputmode="none"
+        autocomplete="off" aria-label="Answer" placeholder="Your answer" />
+
+      <div id="touchKeypad" class="touch-keypad" aria-label="Touchscreen number pad">
+        <button type="button" class="keypad-key" onclick="keypadDigit('1')">1</button>
+        <button type="button" class="keypad-key" onclick="keypadDigit('2')">2</button>
+        <button type="button" class="keypad-key" onclick="keypadDigit('3')">3</button>
+        <button type="button" class="keypad-key" onclick="keypadDigit('4')">4</button>
+        <button type="button" class="keypad-key" onclick="keypadDigit('5')">5</button>
+        <button type="button" class="keypad-key" onclick="keypadDigit('6')">6</button>
+        <button type="button" class="keypad-key" onclick="keypadDigit('7')">7</button>
+        <button type="button" class="keypad-key" onclick="keypadDigit('8')">8</button>
+        <button type="button" class="keypad-key" onclick="keypadDigit('9')">9</button>
+        <button type="button" class="keypad-key keypad-negative" onclick="keypadToggleNegative()">−</button>
+        <button type="button" class="keypad-key" onclick="keypadDigit('0')">0</button>
+        <button type="button" class="keypad-key keypad-back" onclick="keypadBackspace()">⌫</button>
+        <button type="button" class="keypad-key keypad-clear" onclick="keypadClear()">Clear</button>
+        <button type="button" class="keypad-key keypad-submit" onclick="submitAnswer()">✓ Submit Answer</button>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="actions" style="justify-content:center">
+        <button id="submitBtn" class="primary-btn" onclick="submitAnswer()">Submit Answer</button>
+        <button id="revealBtn" class="secondary-btn" onclick="revealAnswer()" style="display:none">Show Answer</button>
+        <button id="nextBtn" class="secondary-btn" onclick="nextQuestion()" style="display:none">Next Question</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="danger-btn" onclick="endDrillEarly()">End Drill</button>
+      <button class="secondary-btn" onclick="toggleSound()">🔊 Sound</button>
+    </div>
+  </section>
+
+  <section id="results" class="screen">
+    <h2 style="text-align:center">Drill Results</h2>
+    <div class="result-score" id="finalScore">8 / 10</div>
+    <div class="result-message" id="resultMessage"></div>
+    <div class="review" id="reviewList"></div>
+    <div class="actions" style="justify-content:center">
+      <button class="primary-btn" onclick="restartSameDrill()">Try Again</button>
+      <button class="secondary-btn" onclick="showScreen('setup')">New Drill</button>
+      <button class="secondary-btn" onclick="showScreen('landing')">Home</button>
+    </div>
+  </section>
+
+  <section id="records" class="screen">
+    <h2>Creator Records Dashboard</h2>
+    <p class="small">Saved on this browser and device. Export a CSV file for backup or consolidation.</p>
+
+    <div class="records-summary">
+      <div class="summary-card"><div class="summary-number" id="sumAttempts">0</div><div>Total Attempts</div></div>
+      <div class="summary-card"><div class="summary-number" id="sumLearners">0</div><div>Unique Learners</div></div>
+      <div class="summary-card"><div class="summary-number" id="sumAverage">0%</div><div>Average Score</div></div>
+      <div class="summary-card"><div class="summary-number" id="sumHighest">0%</div><div>Highest Score</div></div>
+    </div>
+
+    <div class="records-tools">
+      <input id="recordSearch" type="text" placeholder="Search learner, section, operation, or level..." oninput="renderRecords()" />
+      <button class="secondary-btn" onclick="exportRecordsCSV()">⬇ Export CSV</button>
+      <button class="danger-btn" onclick="clearAllRecords()">🗑 Clear Records</button>
+    </div>
+
+    <div class="table-wrap">
+      <table class="records-table">
+        <thead>
+          <tr>
+            <th>Date and Time</th>
+            <th>Learner</th>
+            <th>Grade/Section</th>
+            <th>Operation</th>
+            <th>Level</th>
+            <th>Mode</th>
+            <th>Score</th>
+            <th>Percentage</th>
+            <th>Questions</th>
+          </tr>
+        </thead>
+        <tbody id="recordsBody"></tbody>
+      </table>
+      <div id="emptyRecords" class="empty-records" style="display:none">No saved records yet.</div>
+    </div>
+
+    <div class="actions">
+      <button class="secondary-btn" onclick="showScreen('landing')">← Back to Home</button>
+    </div>
+  </section>
+
+</div>
+
+<div class="global-credit">Developed by Ma’am Gem</div>
+<button class="fullscreen-btn" title="Full Screen" onclick="toggleFullscreen()">⛶</button>
+
+<script>
+let settings = {};
+let questions = [];
+let currentIndex = 0;
+let score = 0;
+let responses = [];
+let timerInterval = null;
+let timeLeft = 0;
+let answered = false;
+let audioContext = null;
+let resultSaved = false;
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id !== 'drill') clearInterval(timerInterval);
+}
+
+function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+function getRanges(level){
+  if(level === 'easy') return {small:[0,20], medium:[1,12], large:[1,50]};
+  if(level === 'average') return {small:[-50,100], medium:[2,25], large:[10,500]};
+  return {small:[-200,500], medium:[10,99], large:[100,5000]};
+}
+
+function generateQuestion(operation, difficulty){
+  const r = getRanges(difficulty);
+  let a,b,answer,symbol,expr,op = operation;
+
+  if(operation === 'mixed'){
+    const choices = ['add','sub','mul','div'];
+    op = choices[rand(0,choices.length-1)];
+  }
+
+  if(op === 'add'){
+    if(difficulty === 'easy'){ a=rand(0,20); b=rand(0,20); }
+    else if(difficulty === 'average'){ a=rand(-50,200); b=rand(-50,200); }
+    else { a=rand(-500,3000); b=rand(-500,3000); }
+    answer=a+b; symbol='+';
+  }
+
+  if(op === 'sub'){
+    if(difficulty === 'easy'){
+      a=rand(0,30); b=rand(0,a);
+    } else if(difficulty === 'average'){
+      a=rand(-50,300); b=rand(-50,300);
+    } else {
+      a=rand(-1000,5000); b=rand(-1000,5000);
+    }
+    answer=a-b; symbol='−';
+  }
+
+  if(op === 'mul'){
+    if(difficulty === 'easy'){ a=rand(1,12); b=rand(1,12); }
+    else if(difficulty === 'average'){ a=rand(-20,30); b=rand(2,25); }
+    else { a=rand(-99,99); b=rand(10,99); }
+    answer=a*b; symbol='×';
+  }
+
+  if(op === 'div'){
+    let divisor, quotient;
+    if(difficulty === 'easy'){
+      divisor=rand(1,12); quotient=rand(1,12);
+    } else if(difficulty === 'average'){
+      divisor=rand(2,25); quotient=rand(-20,30);
+    } else {
+      divisor=rand(5,50); quotient=rand(-99,99);
+    }
+    a=divisor*quotient; b=divisor; answer=quotient; symbol='÷';
+  }
+
+  expr = `${a} ${symbol} ${b}`;
+  return {expr, answer, op};
+}
+
+function startDrill(){
+  const learnerName = document.getElementById('learnerName').value.trim();
+  const learnerSection = document.getElementById('learnerSection').value.trim();
+
+  if(!learnerName){
+    alert('Please enter the learner name before starting the drill.');
+    document.getElementById('learnerName').focus();
+    return;
+  }
+
+  settings = {
+    learnerName,
+    learnerSection: learnerSection || 'Not specified',
+    operation:document.getElementById('operation').value,
+    difficulty:document.getElementById('difficulty').value,
+    count:Number(document.getElementById('questionCount').value),
+    timer:Number(document.getElementById('timerSeconds').value),
+    mode:document.getElementById('mode').value,
+    sound:document.getElementById('soundToggle').checked
+  };
+
+  questions = Array.from({length:settings.count},()=>generateQuestion(settings.operation,settings.difficulty));
+  currentIndex=0; score=0; responses=[]; answered=false; resultSaved=false;
+  showScreen('drill');
+  loadQuestion();
+}
+
+function loadQuestion(){
+  clearInterval(timerInterval);
+  answered=false;
+  const q=questions[currentIndex];
+  document.getElementById('questionLabel').textContent=`Question ${currentIndex+1} of ${questions.length}`;
+  document.getElementById('scoreLabel').textContent=`Score: ${score}`;
+  document.getElementById('questionText').textContent=q.expr;
+  document.getElementById('levelLabel').textContent=`${capitalize(settings.difficulty)} Level`;
+  document.getElementById('progressBar').style.width=`${(currentIndex/questions.length)*100}%`;
+  document.getElementById('feedback').textContent='';
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('answerInput').value='';
+  document.getElementById('answerInput').disabled=false;
+  document.querySelectorAll('#touchKeypad button').forEach(btn=>btn.disabled=false);
+  document.getElementById('submitBtn').style.display=settings.mode==='individual'?'inline-flex':'none';
+  document.getElementById('touchKeypad').style.display=settings.mode==='individual'?'grid':'none';
+  document.getElementById('revealBtn').style.display=settings.mode==='classroom'?'inline-flex':'none';
+  document.getElementById('nextBtn').style.display='none';
+
+  if(settings.mode==='individual'){
+    document.getElementById('answerInput').style.display='inline-block';
+    setTimeout(()=>document.getElementById('answerInput').focus(),100);
+  }else{
+    document.getElementById('answerInput').style.display='none';
+  }
+
+  if(settings.timer>0){
+    timeLeft=settings.timer;
+    updateTimer();
+    timerInterval=setInterval(()=>{
+      timeLeft--;
+      updateTimer();
+      if(timeLeft<=0){
+        clearInterval(timerInterval);
+        if(settings.mode==='individual' && !answered){
+          handleAnswer(null,true);
+        }else if(settings.mode==='classroom' && !answered){
+          revealAnswer();
+        }
+      }
+    },1000);
+  }else{
+    document.getElementById('timerLabel').textContent='No Timer';
+  }
+}
+
+function updateTimer(){
+  document.getElementById('timerLabel').textContent=`Time: ${timeLeft}s`;
+}
+
+function keypadDigit(digit){
+  if(answered) return;
+  const input=document.getElementById('answerInput');
+  let value=input.value;
+  if(value === '0') value='';
+  if(value === '-0') value='-';
+  input.value=value + digit;
+  input.focus();
+}
+
+function keypadToggleNegative(){
+  if(answered) return;
+  const input=document.getElementById('answerInput');
+  const value=input.value.trim();
+  input.value=value.startsWith('-') ? value.slice(1) : '-' + value;
+  input.focus();
+}
+
+function keypadBackspace(){
+  if(answered) return;
+  const input=document.getElementById('answerInput');
+  input.value=input.value.slice(0,-1);
+  input.focus();
+}
+
+function keypadClear(){
+  if(answered) return;
+  const input=document.getElementById('answerInput');
+  input.value='';
+  input.focus();
+}
+
+function submitAnswer(){
+  if(answered) return;
+  const val=document.getElementById('answerInput').value;
+  if(val===''){
+    document.getElementById('feedback').textContent='Please enter an answer.';
+    document.getElementById('feedback').className='feedback wrong';
+    return;
+  }
+  handleAnswer(Number(val),false);
+}
+
+function handleAnswer(userAnswer,timedOut){
+  answered=true;
+  clearInterval(timerInterval);
+  const q=questions[currentIndex];
+  const correct=userAnswer===q.answer;
+
+  if(correct){
+    score++;
+    playSound(true);
+    const praise = getMotivationalMessage();
+    document.getElementById('feedback').textContent=`Correct! ${praise}`;
+    document.getElementById('feedback').className='feedback correct';
+    launchConfetti();
+  }else{
+    playSound(false);
+    document.getElementById('feedback').textContent=
+      timedOut ? `Time is up. Correct answer: ${q.answer}` : `Incorrect. Correct answer: ${q.answer}`;
+    document.getElementById('feedback').className='feedback wrong';
+  }
+
+  responses.push({question:q.expr,userAnswer:timedOut?'No answer':userAnswer,correctAnswer:q.answer,correct});
+  document.getElementById('answerInput').disabled=true;
+  document.querySelectorAll('#touchKeypad button').forEach(btn=>btn.disabled=true);
+  document.getElementById('submitBtn').style.display='none';
+  document.getElementById('revealBtn').style.display='none';
+  document.getElementById('nextBtn').style.display='inline-flex';
+  document.getElementById('scoreLabel').textContent=`Score: ${score}`;
+}
+
+function revealAnswer(){
+  if(answered) return;
+  answered=true;
+  clearInterval(timerInterval);
+  const q=questions[currentIndex];
+  document.getElementById('feedback').textContent=`Answer: ${q.answer}`;
+  document.getElementById('feedback').className='feedback correct';
+  responses.push({question:q.expr,userAnswer:'Classroom reveal',correctAnswer:q.answer,correct:true});
+  document.getElementById('revealBtn').style.display='none';
+  document.getElementById('nextBtn').style.display='inline-flex';
+  playSound(true);
+}
+
+function nextQuestion(){
+  if(currentIndex < questions.length-1){
+    currentIndex++;
+    loadQuestion();
+  }else{
+    finishDrill();
+  }
+}
+
+function finishDrill(){
+  clearInterval(timerInterval);
+  document.getElementById('progressBar').style.width='100%';
+  showScreen('results');
+
+  const total=questions.length;
+  const percentage=Math.round((score/total)*100);
+  document.getElementById('finalScore').textContent=`${score} / ${total} (${percentage}%)`;
+
+  if(!resultSaved){
+    saveDrillRecord({
+      timestamp:new Date().toISOString(),
+      learnerName:settings.learnerName || 'Unknown learner',
+      learnerSection:settings.learnerSection || 'Not specified',
+      operation:operationLabel(settings.operation),
+      difficulty:capitalize(settings.difficulty),
+      mode:settings.mode === 'individual' ? 'Individual' : 'Classroom',
+      score,
+      total,
+      percentage
+    });
+    resultSaved=true;
+  }
+
+  let msg='Keep practicing. Every drill builds stronger skills.';
+  if(percentage>=90) msg='Excellent! Outstanding speed and accuracy.';
+  else if(percentage>=75) msg='Very good! You are showing strong mastery.';
+  else if(percentage>=60) msg='Good effort! A little more practice will help.';
+  document.getElementById('resultMessage').textContent=msg;
+
+  const review=document.getElementById('reviewList');
+  review.innerHTML='';
+  responses.forEach((r,i)=>{
+    const item=document.createElement('div');
+    item.className=`review-item ${r.correct?'ok':'bad'}`;
+    item.innerHTML=`<div><strong>${i+1}. ${r.question}</strong><div class="small">Your answer: ${r.userAnswer}</div></div><div><strong>${r.correctAnswer}</strong></div>`;
+    review.appendChild(item);
+  });
+}
+
+function endDrillEarly(){
+  if(confirm('End the drill and view the current results?')){
+    finishDrill();
+  }
+}
+
+function restartSameDrill(){
+  questions = Array.from({length:settings.count},()=>generateQuestion(settings.operation,settings.difficulty));
+  currentIndex=0; score=0; responses=[]; answered=false; resultSaved=false;
+  showScreen('drill');
+  loadQuestion();
+}
+
+function capitalize(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+
+function ensureAudio(){
+  if(!audioContext){
+    audioContext=new (window.AudioContext||window.webkitAudioContext)();
+  }
+}
+
+function tone(freq,duration,type='sine',delay=0,volume=.18){
+  ensureAudio();
+  const osc=audioContext.createOscillator();
+  const gain=audioContext.createGain();
+  osc.type=type;
+  osc.frequency.value=freq;
+  gain.gain.setValueAtTime(0.0001,audioContext.currentTime+delay);
+  gain.gain.exponentialRampToValueAtTime(volume,audioContext.currentTime+delay+.01);
+  gain.gain.exponentialRampToValueAtTime(0.0001,audioContext.currentTime+delay+duration);
+  osc.connect(gain); gain.connect(audioContext.destination);
+  osc.start(audioContext.currentTime+delay);
+  osc.stop(audioContext.currentTime+delay+duration+.02);
+}
+
+function playSound(correct){
+  if(!settings.sound) return;
+  if(correct){
+    tone(523,.16,'sine',0,.16);
+    tone(659,.16,'sine',.14,.16);
+    tone(784,.24,'sine',.28,.18);
+  }else{
+    tone(220,.18,'sawtooth',0,.12);
+    tone(165,.28,'sawtooth',.12,.10);
+  }
+}
+
+function getMotivationalMessage(){
+  const messages = [
+    'Very Good!',
+    'Excellent!',
+    'Great Job!',
+    'Outstanding!',
+    'Fantastic!',
+    'Well Done!',
+    'Amazing Work!',
+    'You Got It!',
+    'Brilliant!',
+    'Keep It Up!'
+  ];
+  return messages[rand(0,messages.length-1)];
+}
+
+function launchConfetti(){
+  const colors = ['#ff4757','#ffa502','#2ed573','#1e90ff','#a55eea','#ff6bcb'];
+  const count = window.innerWidth < 600 ? 45 : 80;
+
+  for(let i=0;i<count;i++){
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = rand(0,100) + 'vw';
+    piece.style.background = colors[rand(0,colors.length-1)];
+    piece.style.setProperty('--drift', rand(-180,180) + 'px');
+    piece.style.animationDelay = (Math.random() * .35) + 's';
+    piece.style.animationDuration = (1.4 + Math.random() * 1.2) + 's';
+    piece.style.transform = `rotate(${rand(0,360)}deg)`;
+    document.body.appendChild(piece);
+    setTimeout(()=>piece.remove(),2800);
+  }
+}
+
+function toggleSound(){
+  settings.sound=!settings.sound;
+  document.getElementById('soundToggle').checked=settings.sound;
+  alert(settings.sound?'Sound effects are ON.':'Sound effects are OFF.');
+}
+
+
+function operationLabel(value){
+  const labels={add:'Addition',sub:'Subtraction',mul:'Multiplication',div:'Division',mixed:'Mixed Operations'};
+  return labels[value] || value;
+}
+
+function getDrillRecords(){
+  try{
+    return JSON.parse(localStorage.getItem('maamGemDrillRecords') || '[]');
+  }catch(e){
+    return [];
+  }
+}
+
+function saveDrillRecord(record){
+  const records=getDrillRecords();
+  records.unshift(record);
+  localStorage.setItem('maamGemDrillRecords',JSON.stringify(records));
+}
+
+function openCreatorRecords(){
+  const pin=prompt('Enter creator PIN:');
+  if(pin !== 'GEM2026'){
+    if(pin !== null) alert('Incorrect PIN.');
+    return;
+  }
+  showScreen('records');
+  renderRecords();
+}
+
+function renderRecords(){
+  const all=getDrillRecords();
+  const query=(document.getElementById('recordSearch')?.value || '').trim().toLowerCase();
+  const records=all.filter(r=>{
+    const haystack=[r.learnerName,r.learnerSection,r.operation,r.difficulty,r.mode].join(' ').toLowerCase();
+    return haystack.includes(query);
+  });
+
+  const body=document.getElementById('recordsBody');
+  const empty=document.getElementById('emptyRecords');
+  body.innerHTML='';
+
+  records.forEach(r=>{
+    const tr=document.createElement('tr');
+    const date=new Date(r.timestamp);
+    tr.innerHTML=`
+      <td>${date.toLocaleString()}</td>
+      <td><strong>${escapeHtml(r.learnerName)}</strong></td>
+      <td>${escapeHtml(r.learnerSection)}</td>
+      <td>${escapeHtml(r.operation)}</td>
+      <td>${escapeHtml(r.difficulty)}</td>
+      <td>${escapeHtml(r.mode)}</td>
+      <td>${r.score} / ${r.total}</td>
+      <td><strong>${r.percentage}%</strong></td>
+      <td>${r.total}</td>`;
+    body.appendChild(tr);
+  });
+
+  empty.style.display=records.length ? 'none' : 'block';
+
+  const uniqueLearners=new Set(all.map(r=>(r.learnerName+'|'+r.learnerSection).toLowerCase())).size;
+  const avg=all.length ? Math.round(all.reduce((s,r)=>s+Number(r.percentage||0),0)/all.length) : 0;
+  const high=all.length ? Math.max(...all.map(r=>Number(r.percentage||0))) : 0;
+  document.getElementById('sumAttempts').textContent=all.length;
+  document.getElementById('sumLearners').textContent=uniqueLearners;
+  document.getElementById('sumAverage').textContent=avg+'%';
+  document.getElementById('sumHighest').textContent=high+'%';
+}
+
+function escapeHtml(value){
+  return String(value ?? '').replace(/[&<>"']/g,m=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+  })[m]);
+}
+
+function exportRecordsCSV(){
+  const records=getDrillRecords();
+  if(!records.length){
+    alert('There are no records to export.');
+    return;
+  }
+
+  const rows=[
+    ['Date and Time','Learner','Grade/Section','Operation','Difficulty','Mode','Score','Total','Percentage']
+  ];
+
+  records.forEach(r=>rows.push([
+    new Date(r.timestamp).toLocaleString(),
+    r.learnerName,
+    r.learnerSection,
+    r.operation,
+    r.difficulty,
+    r.mode,
+    r.score,
+    r.total,
+    r.percentage+'%'
+  ]));
+
+  const csv=rows.map(row=>row.map(cell=>{
+    const text=String(cell ?? '').replace(/"/g,'""');
+    return `"${text}"`;
+  }).join(',')).join('\n');
+
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='Maam_Gem_Four_Operations_Drill_Records.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function clearAllRecords(){
+  if(confirm('Permanently delete all saved drill records from this browser and device?')){
+    localStorage.removeItem('maamGemDrillRecords');
+    renderRecords();
+    alert('All records have been cleared.');
+  }
+}
+
+
+function toggleFullscreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen?.();
+  }else{
+    document.exitFullscreen?.();
+  }
+}
+
+document.getElementById('answerInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    e.preventDefault();
+    if(!answered) submitAnswer();
+    else if(document.getElementById('nextBtn').style.display!=='none') nextQuestion();
+    return;
+  }
+
+  const allowed=['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'];
+  if(allowed.includes(e.key)) return;
+
+  if(e.key==='-' || e.key==='−'){
+    e.preventDefault();
+    keypadToggleNegative();
+    return;
+  }
+
+  if(!/^[0-9]$/.test(e.key)) e.preventDefault();
+});
+
+document.getElementById('answerInput').addEventListener('input',e=>{
+  e.target.value=e.target.value
+    .replace(/−/g,'-')
+    .replace(/(?!^-)[^0-9]/g,'')
+    .replace(/^(-?)0+(?=\d)/,'$1');
+});
+</script>
+</body>
+</html>
